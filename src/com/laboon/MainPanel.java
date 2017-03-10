@@ -8,12 +8,15 @@ import java.util.*;
 public class MainPanel extends JPanel {
 
 
-    public JTextArea _ta = new JTextArea(80, 25);
+    public JTextArea _ta = new JTextArea(1, 40);
 
-    public JTextArea _stack = new JTextArea(80, 1);
+    public JTextArea _stack = new JTextArea(1, 40);
     
-    public JTextArea _output = new JTextArea(80, 10);
-	
+    public JTextArea _output = new JTextArea(10, 40);
+
+    public JLabel _taLabel = new JLabel();
+    public JLabel _stackLabel = new JLabel();
+    public JLabel _outputLabel = new JLabel();
     
     /**
      * Convert the Main Panel into a String
@@ -24,11 +27,22 @@ public class MainPanel extends JPanel {
 	return "TODO";
     }
 
+    public String convertTextAreaToString() {
+
+	String text = _ta.getText();
+	return text;
+    }
+    
     /**
      * Run until complete
      */
     
     public void run() {
+	ProgramStack ps = new ProgramStack();
+	ProgramArea pa = new ProgramArea(convertTextAreaToString());
+	// System.out.println(pa.toString());
+	ProgramExecutor pe = new ProgramExecutor(this, ps, pa);
+	pe.run();
     }
 
     public void step() {
@@ -43,17 +57,42 @@ public class MainPanel extends JPanel {
     }
     
 
+    public void print(char c) {
+	String newText = _output.getText() + String.valueOf(c);
+	_output.setText(newText);
+    }
+
+    public void printInt(int i) {
+	String newText = _output.getText() + i;
+	_output.setText(newText);
+
+    }
+    
+    public void setStack(String stackStr) {
+	_stack.setText(stackStr);
+    }
+    
     public MainPanel() {
 	super();
-	_ta.setFont(new Font("monospaced"));
-	_ta.setWordWrap(false);
 
-	_stack.setFont(new Font("monospaced"));
-	_stack.setWordWrap(false);
+	Font f = new Font("monospaced", Font.PLAIN, 12);
+	
+	_ta.setFont(f);
+	_ta.setBorder(BorderFactory.createLineBorder(Color.black));
+	
+	_stack.setFont(f);
+	_stack.setBorder(BorderFactory.createLineBorder(Color.black));
+	
+	_output.setFont(f);
+	_output.setBorder(BorderFactory.createLineBorder(Color.black));
+	
+	
+	this.setLayout(new GridLayout(3, 1));
 
-	_output.setFont(new Font("monospaced"));
-	_output.setWordWrap(false);
-
+	this.add(_ta);
+	this.add(_stack);
+	this.add(_output);
+	    
 	
 	_ta.setVisible(true);
 	_stack.setVisible(true);

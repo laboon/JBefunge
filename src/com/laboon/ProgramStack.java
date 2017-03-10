@@ -14,5 +14,14 @@ public class ProgramStack {
 	Integer val = _stack.pop();
 	return val.intValue();
     }
+
+    public int peek() {
+	Integer val = _stack.peek();
+	return val.intValue();
+    }
+    
+    public String toString() {
+	return _stack.toString();
+    }
     
 }

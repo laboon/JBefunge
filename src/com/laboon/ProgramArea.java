@@ -8,22 +8,73 @@ public class ProgramArea {
     
     private char[][] _area = new char[DEFAULT_X_SIZE][DEFAULT_Y_SIZE];
     
-    private int _xSize = -1;
+    public int _xSize = DEFAULT_X_SIZE;
 
-    private int _ySize = -1;
-    
-    public ProgramArea() {
+    public int _ySize = DEFAULT_Y_SIZE;
+
+    public void fillUpSpaces() {
 	// Fill up area with spaces to start
 	for (int j = 0; j < DEFAULT_X_SIZE; j++) {
 	    for (int k = 0; k < DEFAULT_Y_SIZE; k++) {
 		_area[j][k] = ' ';
 	    }
 	}
+
+    }
+
+    public ProgramArea(String init) {
+	fillUpSpaces();
+	// System.out.println("PA - init string: " + init);
+	String[] lines = init.split("\n");
+	String line;
+
+	int len = lines.length;
+	int lineLen = 0;
+
+	// ignore lines > 25
+	if (len > 25) {
+	    len = 25;
+	}
+	
+	for (int j = 0; j < len; j++) {
+	    line = lines[j];
+	    lineLen = line.length();
+	    // System.out.println("PA - j: " + j + " / " + line);
+	    if (lineLen > 80) {
+		lineLen = 80;
+	    }
+	    for (int k = 0; k < lineLen; k++) {
+		// System.out.println("\tPA - k " + k + "/" + line.charAt(k));
+		_area[j][k] = line.charAt(k);
+	    }
+	}
+
+	
+    }
+    
+    public ProgramArea() {
+	fillUpSpaces();
     }
 
     public char getOpCode(int x, int y) {
 	return _area[x][y];
     }
+ 
+    public void setOpCode(int x, int y, char v) {
+	_area[x][y] = v;
+    }
+   
     
+
+    public String toString() {
+	StringBuilder sb = new StringBuilder("");
+	for (int j = 0; j < _xSize; j++) {
+	    for (int k = 0; k < _ySize; k++) {
+		sb.append(_area[j][k]);
+	    }
+	    sb.append("\n");
+	}
+	return sb.toString();
+    }
     
 }
