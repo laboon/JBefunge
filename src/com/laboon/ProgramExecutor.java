@@ -62,7 +62,7 @@ public class ProgramExecutor {
 	    // System.out.println("String mode?" + _inStringMode);
 	    if (_inStringMode) {
 		if (c == '"') {
-		    System.out.println("Leaving string mode...");
+		    // System.out.println("Leaving string mode...");
 		    // Leave string mode
 		    _inStringMode = false;
 		} else {
@@ -91,7 +91,7 @@ public class ProgramExecutor {
 	    case '-':
 		a = _ps.pop();
 		b = _ps.pop();
-		_ps.push(a - b);
+		_ps.push(b - a);
 
 		break;
 	    
@@ -216,13 +216,14 @@ public class ProgramExecutor {
 	    case '.':
 		a = _ps.pop();
 		_mp.printInt(a);
-
+		System.out.print(a);
 		break;
 
 		// ,   Pop top of stack and output as ASCII character
 	    case ',':
 		a = _ps.pop();
 		_mp.print((char) a);
+		System.out.print((char) a);
 		break;
 
 		// #   Bridge: jump over next command in the current direction of the current PC
@@ -352,12 +353,18 @@ public class ProgramExecutor {
 	_x = 0;
 	_y = 0;
 	_d = Direction.RIGHT;
-	// System.out.println("Run");
 	while (!_programComplete) {
 	    // System.out.println("Executing @ [" + _x + "," + _y + "]");
 	    executeOneStep();
 	    // System.out.println("Stack " + _ps);
 	    _mp.setStack(_ps.toString());
+	    // Give some time to redraw screen
+	    // try {
+	    // 	_mp.refresh();
+	    // 	Thread.sleep(100);
+	    // } catch (InterruptedException iex) {
+	    // 	// do nothing
+	    // }
 	}
     }
 

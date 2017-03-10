@@ -3,8 +3,8 @@ package com.laboon;
 public class ProgramArea {
 
 
-    private int DEFAULT_X_SIZE = 80;
-    private int DEFAULT_Y_SIZE = 25;
+    private int DEFAULT_X_SIZE = 100;
+    private int DEFAULT_Y_SIZE = 100;
     
     private char[][] _area = new char[DEFAULT_X_SIZE][DEFAULT_Y_SIZE];
     
@@ -31,17 +31,17 @@ public class ProgramArea {
 	int len = lines.length;
 	int lineLen = 0;
 
-	// ignore lines > 25
-	if (len > 25) {
-	    len = 25;
+	// ignore lines > _xSize
+	if (len > _xSize) {
+	    len = _xSize;
 	}
 	
 	for (int j = 0; j < len; j++) {
 	    line = lines[j];
 	    lineLen = line.length();
 	    // System.out.println("PA - j: " + j + " / " + line);
-	    if (lineLen > 80) {
-		lineLen = 80;
+	    if (lineLen > _ySize) {
+		lineLen = _ySize;
 	    }
 	    for (int k = 0; k < lineLen; k++) {
 		// System.out.println("\tPA - k " + k + "/" + line.charAt(k));
