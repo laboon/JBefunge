@@ -20,6 +20,33 @@ public class MainPanel extends JPanel {
     public JLabel _taLabel = new JLabel();
     public JLabel _stackLabel = new JLabel();
     public JLabel _outputLabel = new JLabel();
+
+    public JPanel _midPanel = new JPanel();
+
+    public int getIntFromUser() {
+	String inp = JOptionPane.showInputDialog("Enter an integer (if unparseable, counts as 0)");
+	int toReturn = 0;
+	try {
+	    toReturn = Integer.parseInt(inp);
+	} catch (NumberFormatException nfex) {
+	    toReturn = 0;
+	}
+	return toReturn;
+	    
+    }
+
+    public int getCharFromUser() {
+	String inp = JOptionPane.showInputDialog("Enter a single char (if > 1, will use first; if none, null (0) char)");
+	int toReturn = 0;
+	try {
+	    toReturn = (int) inp.charAt(0);
+	} catch (Exception nfex) {
+	    toReturn = 0;
+	}
+	return toReturn;
+	    
+    }
+
     
     /**
      * Convert the Main Panel into a String
@@ -49,9 +76,6 @@ public class MainPanel extends JPanel {
 	// System.out.println(pa.toString());
 	ProgramExecutor pe = new ProgramExecutor(this, ps, pa);
 	pe.run();
-    }
-
-    public void step() {
     }
 
 
@@ -93,16 +117,22 @@ public class MainPanel extends JPanel {
 	_ta.setBorder(BorderFactory.createLineBorder(Color.black));
 	
 	_stack.setFont(f);
+	_stack.setEditable(false);
 	_stack.setBorder(BorderFactory.createLineBorder(Color.black));
 	
 	_output.setFont(f);
+	_output.setEditable(false);
 	_output.setBorder(BorderFactory.createLineBorder(Color.black));
-	
+
+	_midPanel.setLayout(new GridLayout(3, 1));
+	_midPanel.add(new JLabel("Stack:"));
+	_midPanel.add(_stackSp);	
+	_midPanel.add(new JLabel("Output:"));
 	
 	this.setLayout(new GridLayout(3, 1));
 
 	this.add(_taSp);
-	this.add(_stackSp);
+	this.add(_midPanel);
 	this.add(_outputSp);
 	    
 	

@@ -20,13 +20,13 @@ public class ButtonPanel extends JPanel {
 	// to all of the buttons.
 	
 	_run = new RunButton(m);
-	_step = new StepButton(m);
+	// _step = new StepButton(m);
 	setLayout(new FlowLayout());
 
 	// Add all of the buttons
 	
 	add(_run);
-	add(_step);
+	// add(_step);
     }
     
 }

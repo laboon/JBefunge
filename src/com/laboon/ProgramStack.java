@@ -1,6 +1,6 @@
 package com.laboon;
 
-import java.util.Stack;
+import java.util.*;
 
 public class ProgramStack {
 
@@ -11,8 +11,13 @@ public class ProgramStack {
     }
 
     public int pop() {
-	Integer val = _stack.pop();
-	return val.intValue();
+	try {
+	    Integer val = _stack.pop();
+	    return val.intValue();
+	} catch (EmptyStackException esex) {
+	    return 0;
+	}
+
     }
 
     public int peek() {

@@ -17,7 +17,7 @@ public class StepButton extends JButton {
     class StepButtonListener implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
-	    _m.step();
+	    // _m.step();
 	}
     }    
     

@@ -4,6 +4,8 @@ import java.util.*;
 
 public class ProgramExecutor {
 
+    Random _r = new Random();
+
     private MainPanel _mp;
     
     private boolean _programComplete = false;
@@ -50,7 +52,6 @@ public class ProgramExecutor {
     // 0 – 9   Push corresponding number onto the stack
 
 
-    // TODO - implement!
     public void executeInstruction(char c) {
 	// If the stack is empty, ignore the instruction
 	try {
@@ -72,7 +73,9 @@ public class ProgramExecutor {
 		}
 		return;
 	    }
-	
+
+	    // If not in string entry mode, we are executing instructions
+	    
 	    switch (c) {
 
 		// (space) - ignore
@@ -80,66 +83,39 @@ public class ProgramExecutor {
 		// DO NOTHING, KEEP MOVING
 		break;
 	    
-		// +   Addition: Pop two values a and b, then push the result of a+b
+	    // +   Addition: Pop two values a and b, then push the result of a+b
 	    case '+':
-		a = _ps.pop();
-		b = _ps.pop();
-		_ps.push(a + b);
+		add();
 		break;
 
 		// -   Subtraction: Pop two values a and b, then push the result of b-a	    
 	    case '-':
-		a = _ps.pop();
-		b = _ps.pop();
-		_ps.push(b - a);
-
+		subtract();
 		break;
 	    
 		// *   Multiplication: Pop two values a and b, then push the result of a*b
 	    case '*':
-		a = _ps.pop();
-		b = _ps.pop();
-		_ps.push(a * b);
-
+		multiply();
 		break;
 		    
 		// /   Integer division: Pop two values a and b, then push the result of b/a, rounded down. According to the specifications, if a is zero, ask the user what result they want.
 	    case '/':
-		a = _ps.pop();
-		b = _ps.pop();
-		if (a == 0) {
-		    _ps.push(0);
-		} else {
-		    _ps.push(b / a);
-		}
+		divide();
 		break;
 
 		// %   Modulo: Pop two values a and b, then push the remainder of the integer division of b/a.
 	    case '%':
-		a = _ps.pop();
-		b = _ps.pop();
-		_ps.push(b % a);
+		modulo();
 		break;
 
 		// !   Logical NOT: Pop a value. If the value is zero, push 1; otherwise, push zero.
 	    case '!':
-		a = _ps.pop();
-		if (a == 0) {
-		    _ps.push(1);
-		} else {
-		    _ps.push(0);
-		}
+		not();
 		break;
 
 		// `   Greater than: Pop two values a and b, then push 1 if b>a, otherwise zero.
 	    case '`':
-		a = _ps.pop();
-		b = _ps.pop();
-		if (b > a) {
-		    _ps.push(1);
-		} else {
-		    _ps.push(0);
-		}
+		greaterThan();
 		break;
 
 		// >   PC direction right
@@ -164,28 +140,17 @@ public class ProgramExecutor {
 
 		// ?   Random PC direction
 	    case '?':
-		System.err.println(c + "NOT YET IMPLEMENTED!");
+		randomDir();
 		break;
 
 		// _   Horizontal IF: pop a value; set direction to right if value=0, set to left otherwise
 	    case '_':
-		a = _ps.pop();
-		if (a == 0) {
-		    _d = Direction.RIGHT;
-		} else {
-		    _d = Direction.LEFT;
-		}
+		horizontalIf();
 		break;
 
 		// |   Vertical IF: pop a value; set direction to down if value=0, set to up otherwise
 	    case '|':
-		a = _ps.pop();
-		if (a == 0) {
-		    _d = Direction.DOWN;
-		} else {
-		    _d = Direction.UP;
-		}
-
+		verticalIf();
 		break;
 
 		// "   Toggle stringmode (push each character's ASCII value all the way up to the next ")
@@ -195,16 +160,12 @@ public class ProgramExecutor {
 
 		// :   Duplicate top stack value
 	    case ':':
-		a = _ps.peek();
-		_ps.push(a);
+		duplicate();
 		break;
 
 		// \   Swap top stack values
 	    case '\\':
-		a = _ps.pop();
-		b = _ps.pop();
-		_ps.push(a);
-		_ps.push(b);
+		swap();
 		break;
 
 		// $   Pop (remove) top stack value and discard
@@ -234,38 +195,24 @@ public class ProgramExecutor {
 
 		// g   A "get" call (a way to retrieve data in storage). Pop two values y and x, then push the ASCII value of the character at that position in the program. If (x,y) is out of bounds, push 0
 	    case 'g':
-		y = _ps.pop();
-		x = _ps.pop();
-		if (x > _pa._xSize || y > _pa._ySize || x < 0 || y < 0) {
-		    _ps.push(0);
-		} else {
-		    char toWrite = _pa.getOpCode(x, y);
-		    _ps.push((int) toWrite);
-		}
+		get();
 		break;
 
 		// p   A "put" call (a way to store a value for later use). Pop three values y, x and v, then change the character at the position (x,y) in the program to the character with ASCII value v
 	    case 'p':
-
-		y = _ps.pop();
-		x = _ps.pop();
-		int v = _ps.pop();
-		if (x > _pa._xSize || y > _pa._ySize || x < 0 || y < 0) {
-		    // Ignore, do nothing
-		} else {
-		    _pa.setOpCode(x, y, (char) v);
-		}
-
+		put();
 		break;
 
 		// &   Get integer from user and push it
 	    case '&':
-		System.err.println(x + "NOT YET IMPLEMENTED!");
+		x = _mp.getIntFromUser();
+		_ps.push(x);
 		break;
 
 		// ~   Get character from user and push it
 	    case '~':
-		System.err.println(x + "NOT YET IMPLEMENTED!");
+		int newChar = _mp.getCharFromUser();
+		_ps.push(newChar);
 		break;
 
 		// @   End program
@@ -298,6 +245,133 @@ public class ProgramExecutor {
 	
     }
 
+
+    
+    public void add() {
+	int a = _ps.pop();
+	int b = _ps.pop();
+	_ps.push(a + b);
+    }
+
+    public void subtract() {
+	int a = _ps.pop();
+	int b = _ps.pop();
+	_ps.push(b - a);
+    }
+
+    public void multiply() {
+	int a = _ps.pop();
+	int b = _ps.pop();
+	_ps.push(a * b);
+    }
+
+    public void divide() {
+	int a = _ps.pop();
+	int b = _ps.pop();
+	if (a == 0) {
+	    _ps.push(0);
+	} else {
+	    _ps.push(b / a);
+	}
+
+    }
+
+    public void modulo() {
+	int a = _ps.pop();
+	int b = _ps.pop();
+	_ps.push(b % a);
+    }
+
+    public void not() {
+	int a = _ps.pop();
+	if (a == 0) {
+	    _ps.push(1);
+	} else {
+	    _ps.push(0);
+	}
+
+    }
+
+    public void greaterThan() {
+	int a = _ps.pop();
+	int b = _ps.pop();
+	if (b > a) {
+	    _ps.push(1);
+	} else {
+	    _ps.push(0);
+	}
+    }
+
+    public void randomDir() {
+	int a = _r.nextInt(3);
+	switch (a) {
+	case 0:
+	    _d = Direction.RIGHT;
+	case 1:
+	    _d = Direction.LEFT;
+	case 2:
+	    _d = Direction.UP;
+	case 3:
+	    _d = Direction.DOWN;
+	}
+
+    }
+
+    public void horizontalIf() {
+	int a = _ps.pop();
+	if (a == 0) {
+	    _d = Direction.RIGHT;
+	} else {
+	    _d = Direction.LEFT;
+	}
+    }
+
+    public void verticalIf() {
+	int a = _ps.pop();
+	if (a == 0) {
+	    _d = Direction.DOWN;
+	} else {
+	    _d = Direction.UP;
+	}
+
+    }
+
+
+    public void duplicate() {
+	int a = _ps.peek();
+	_ps.push(a);
+    }
+
+    public void swap() {
+	int a = _ps.pop();
+	int b = _ps.pop();
+	_ps.push(a);
+	_ps.push(b);
+    }
+
+    public void get() {
+	int y = _ps.pop();
+	int x = _ps.pop();
+	if (x > _pa._xSize || y > _pa._ySize || x < 0 || y < 0) {
+	    _ps.push(0);
+	} else {
+	    char toWrite = _pa.getOpCode(x, y);
+	    _ps.push((int) toWrite);
+	}
+    }
+
+    public void put() {
+	int y = _ps.pop();
+	int x = _ps.pop();
+	int v = _ps.pop();
+	if (x > _pa._xSize || y > _pa._ySize || x < 0 || y < 0) {
+	    // Ignore, do nothing
+	} else {
+	    _pa.setOpCode(x, y, (char) v);
+	}
+
+    }
+    
     public void moveOneSpace() {
 	switch (_d) {
 	case LEFT:
@@ -333,7 +407,8 @@ public class ProgramExecutor {
     public void executeOneStep() {
 	// Get character at current location and execute it
 	char opCode = _pa.getOpCode(_x, _y);
-	// System.out.println("Loc = [" + _x + "," + _y + "], d = " + _d.toString() + ", op = " + opCode);
+	System.out.println("Loc = [" + _x + "," + _y + "], d = " + _d.toString() + ", op = " + opCode);
+	System.out.println("Stack " + _ps);
 	executeInstruction(opCode);
 	// Move one space in correct direction
 	moveOneSpace();
@@ -356,7 +431,6 @@ public class ProgramExecutor {
 	while (!_programComplete) {
 	    // System.out.println("Executing @ [" + _x + "," + _y + "]");
 	    executeOneStep();
-	    // System.out.println("Stack " + _ps);
 	    _mp.setStack(_ps.toString());
 	    // Give some time to redraw screen
 	    // try {
