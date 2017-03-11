@@ -2,25 +2,47 @@ package com.laboon;
 
 import java.util.*;
 
-public class ProgramExecutor {
+/**
+ * This class handles all actual execution of the program.
+ * Note that it is _extremely_ stateful - methods will modify the
+ * ProgramStack _ps and ProgramArea _pa, but will seldom return
+ * values.  This adds a challenge to testing and may make doubling
+ * or mocking difficult!
+ */
 
+
+
+public class ProgramExecutor {
+    
+    // Random number generator.  Used solely for the '?' opcode.
     Random _r = new Random();
 
+    // A reference to the MainPanel, which will allow us to update
+    // the stack and output areas.
     private MainPanel _mp;
-    
+
+    // True if program has completed execution; false otherwise.
     private boolean _programComplete = false;
-    
+
+    // A reference to a ProgramArea (i.e., the array with the code in it)
     private ProgramArea _pa;
 
+    // The ProgramStack for this program.
     private ProgramStack _ps;
 
+    // The current direction of the PC.  It starts moving right but
+    // can be modified by the '<', '>', '^' and 'v' opcodes.
     private Direction _d = Direction.RIGHT;
 
+    // The current (x, y) location of the PC.
     private int _x = 0;
-
     private int _y = 0;
 
-    private boolean _inStringMode = false;
+    
+    // Whether or not we are currently reading the input in as a string.
+    // The opcode '"' puts us into string mode when first encountered, and
+    // will exit that mode when a second '"' opcode is encountered.
+    public boolean _inStringMode = false;
 
     // Commands:
     // +   Addition: Pop two values a and b, then push the result of a+b
@@ -53,16 +75,24 @@ public class ProgramExecutor {
 
 
     public void executeInstruction(char c) {
-	// If the stack is empty, ignore the instruction
+	// If the stack is empty, and is not otherwise caught,
+	// ignore the instruction
 	try {
+	    // Default variables, re-used throughout the big switch..case
 	    int a = 0;
 	    int b = 0;
 	    int x = 0;
 	    int y = 0;
-	
+
+	    // Uncomment for debugging info
 	    // System.out.println("String mode?" + _inStringMode);
+
+	    // If we are in string mode, read in char as the int version
+	    // of its ASCII value.  
+	    
 	    if (_inStringMode) {
 		if (c == '"') {
+		    // Uncomment for debugging info
 		    // System.out.println("Leaving string mode...");
 		    // Leave string mode
 		    _inStringMode = false;
@@ -108,42 +138,42 @@ public class ProgramExecutor {
 		modulo();
 		break;
 
-		// !   Logical NOT: Pop a value. If the value is zero, push 1; otherwise, push zero.
+	     // !   Logical NOT: Pop a value. If the value is zero, push 1; otherwise, push zero.
 	    case '!':
 		not();
 		break;
 
-		// `   Greater than: Pop two values a and b, then push 1 if b>a, otherwise zero.
+            // `   Greater than: Pop two values a and b, then push 1 if b>a, otherwise zero.
 	    case '`':
 		greaterThan();
 		break;
 
-		// >   PC direction right
+	    // >   PC direction right
 	    case '>':
 		_d = Direction.RIGHT;
 		break;
 
-		// <   PC direction left
+	    // <   PC direction left
 	    case '<':
 		_d = Direction.LEFT;
 		break;
 
-		// ^   PC direction up
+	    // ^   PC direction up
 	    case '^':
 		_d = Direction.UP;
 		break;
 
-		// v   PC direction down
+            // v   PC direction down
 	    case 'v':
 		_d = Direction.DOWN;
 		break;
 
-		// ?   Random PC direction
+            // ?   Random PC direction
 	    case '?':
 		randomDir();
 		break;
 
-		// _   Horizontal IF: pop a value; set direction to right if value=0, set to left otherwise
+	    // _   Horizontal IF: pop a value; set direction to right if value=0, set to left otherwise
 	    case '_':
 		horizontalIf();
 		break;
@@ -244,7 +274,6 @@ public class ProgramExecutor {
 
 	
     }
-
 
     
     public void add() {

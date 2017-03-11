@@ -1,17 +1,32 @@
 package com.laboon;
 
+/**
+ * The actual input program, converted from a big String to an 
+ * m * n array of chars.
+ */
+
 public class ProgramArea {
 
+    // Default size of board is 100x100
+    // Note that we currently do not have the option to extend it
 
-    private int DEFAULT_X_SIZE = 100;
-    private int DEFAULT_Y_SIZE = 100;
-    
+    private final int DEFAULT_X_SIZE = 100;
+    private final int DEFAULT_Y_SIZE = 100;
+
+    // The actual char array holding the program.
+    // Converted from a string.
     private char[][] _area = new char[DEFAULT_X_SIZE][DEFAULT_Y_SIZE];
-    
+
+    // The (publicly accessible) x and y sizes of the array.
     public int _xSize = DEFAULT_X_SIZE;
 
     public int _ySize = DEFAULT_Y_SIZE;
 
+    /**
+     * Fills up the program area with spaces (the "ignore" opcode)
+     * before reading in the program.
+     */
+    
     public void fillUpSpaces() {
 	// Fill up area with spaces to start
 	for (int j = 0; j < DEFAULT_X_SIZE; j++) {
@@ -22,9 +37,20 @@ public class ProgramArea {
 
     }
 
+    /**
+     * Constructor
+     * @param init - The initial string of the program
+     */
+    
     public ProgramArea(String init) {
+
+	// Fill up initial board with spaces
+	
 	fillUpSpaces();
-	// System.out.println("PA - init string: " + init);
+
+	// Read the string in, converting it into lines, and then
+	// putting  each character in a line into the main char array
+	
 	String[] lines = init.split("\n");
 	String line;
 
@@ -39,32 +65,55 @@ public class ProgramArea {
 	for (int j = 0; j < len; j++) {
 	    line = lines[j];
 	    lineLen = line.length();
-	    // System.out.println("PA - j: " + j + " / " + line);
+
+	    // Ignore chars past _ySize
 	    if (lineLen > _ySize) {
 		lineLen = _ySize;
 	    }
 	    for (int k = 0; k < lineLen; k++) {
-		// System.out.println("\tPA - k " + k + "/" + line.charAt(k));
 		_area[j][k] = line.charAt(k);
 	    }
 	}
 
 	
     }
+
+    /**
+     * Default constructor.
+     * Creates a ProgramArea which is all spaces
+     */
     
     public ProgramArea() {
 	fillUpSpaces();
     }
 
+    /**
+     * Get the opcode from a particular place in the program area.
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return char The opcode (char) at that location
+     */
+    
     public char getOpCode(int x, int y) {
 	return _area[x][y];
     }
- 
+
+    /**
+     * Set the opcode at a particular place in the program area.
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return char The opcode (char) to set at that location
+     */
+
+    
     public void setOpCode(int x, int y, char v) {
 	_area[x][y] = v;
     }
    
-    
+    /**
+     * Convert the ProgramArea back into a String
+     * @return String string representation of the ProgramArea
+     */
 
     public String toString() {
 	StringBuilder sb = new StringBuilder("");
