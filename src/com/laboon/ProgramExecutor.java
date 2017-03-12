@@ -44,7 +44,10 @@ import java.util.*;
 public class ProgramExecutor {
     
     // Random number generator.  Used solely for the '?' opcode.
-    Random _r = new Random();
+    // Static because we don't really need a new RNG for each program
+    // Also, no worries about thread safety since program execution is
+    // single-threaded
+    public static Random _r = new Random();
 
     // A reference to the MainPanel, which will allow us to update
     // the stack and output areas.
@@ -411,16 +414,20 @@ public class ProgramExecutor {
      */
 
     public void randomDir() {
-	int a = _r.nextInt(3);
+	int a = _r.nextInt(4);
 	switch (a) {
 	case 0:
 	    _d = Direction.RIGHT;
+	    break;
 	case 1:
 	    _d = Direction.LEFT;
+	    break;
 	case 2:
 	    _d = Direction.UP;
+	    break;
 	case 3:
 	    _d = Direction.DOWN;
+	    break;
 	}
 
     }
