@@ -19,6 +19,14 @@ public class ProgramStack {
     private Stack<Integer> _stack = new Stack<Integer>();
 
     /**
+     * Default constructor (no elements on stack)
+     */
+
+    public ProgramStack() {
+	// This space deliberately kept blank
+    }
+    
+    /**
      * Push an int value onto the stack.
      * @param val value to push
      */

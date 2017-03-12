@@ -57,14 +57,14 @@ public class ProgramExecutor {
     private boolean _programComplete = false;
 
     // A reference to a ProgramArea (i.e., the array with the code in it)
-    private ProgramArea _pa;
+    public ProgramArea _pa;
 
     // The ProgramStack for this program.
-    private ProgramStack _ps;
+    public ProgramStack _ps;
 
     // The current direction of the PC.  It starts moving right but
     // can be modified by the '<', '>', '^' and 'v' opcodes.
-    private Direction _d = Direction.RIGHT;
+    public Direction _d = Direction.RIGHT;
 
     // The current (x, y) location of the PC.
     private int _x = 0;
@@ -83,8 +83,6 @@ public class ProgramExecutor {
     // The opcode '"' puts us into string mode when first encountered, and
     // will exit that mode when a second '"' opcode is encountered.
     public boolean _inStringMode = false;
-
-
 
     public void executeInstruction(char c) {
 	// If the stack is empty, and is not otherwise caught,

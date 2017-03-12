@@ -27,7 +27,7 @@ public class ProgramArea {
      * before reading in the program.
      */
     
-    public void fillUpSpaces() {
+    private void fillUpSpaces() {
 	// Fill up area with spaces to start
 	for (int j = 0; j < DEFAULT_X_SIZE; j++) {
 	    for (int k = 0; k < DEFAULT_Y_SIZE; k++) {
@@ -89,25 +89,34 @@ public class ProgramArea {
 
     /**
      * Get the opcode from a particular place in the program area.
+     * If opcode is not in program space, return null char (ASCII 0).
      * @param x x-coordinate
      * @param y y-coordinate
      * @return char The opcode (char) at that location
      */
     
     public char getOpCode(int x, int y) {
-	return _area[x][y];
+	if (x >= _xSize || x < 0 || y >= _ySize || y < 0) {
+	    return (char) 0;
+	} else {
+	    return _area[x][y];
+	}
     }
 
     /**
      * Set the opcode at a particular place in the program area.
+     * If out of bounds, do nothing.
      * @param x x-coordinate
      * @param y y-coordinate
      * @return char The opcode (char) to set at that location
      */
-
     
     public void setOpCode(int x, int y, char v) {
-	_area[x][y] = v;
+	if (x >= _xSize || x < 0 || y >= _ySize || y < 0) {
+	    // Ignore
+	} else {
+	    _area[x][y] = v;
+	}
     }
    
     /**
