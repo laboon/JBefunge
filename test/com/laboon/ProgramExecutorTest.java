@@ -173,6 +173,4 @@ public class ProgramExecutorTest {
 	assertEquals(Direction.LEFT, _e._d);
     }
 
-    
-    
 }
