@@ -94,8 +94,12 @@ public class MainPanel extends JPanel {
 	ProgramStack ps = new ProgramStack();
 	ProgramArea pa = new ProgramArea(convertTextAreaToString());
 	// System.out.println(pa.toString());
+	long start = System.nanoTime();
 	ProgramExecutor pe = new ProgramExecutor(this, ps, pa);
+	long end = System.nanoTime();
+	long time = (end - start) / 1000;
 	pe.run();
+	JOptionPane.showMessageDialog(this, "Time to execute: " + time + " microseconds");
     }
 
 
