@@ -269,7 +269,7 @@ public class ProgramExecutor {
 		break;
 		
 	    default:  
-		System.err.println(x + "NOT SUPPORTED!");
+		System.err.println(c + " NOT SUPPORTED!");
 	    
 	    }
 	} catch (EmptyStackException esex) {
