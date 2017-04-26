@@ -80,6 +80,9 @@ public class MainPanel extends JPanel {
     public String convertTextAreaToString() {
 
 	String text = _ta.getText();
+	if (text == null) {
+	    text = "";
+	}
 	return text;
     }
     
