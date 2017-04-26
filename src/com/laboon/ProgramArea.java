@@ -118,7 +118,26 @@ public class ProgramArea {
 	    _area[x][y] = v;
 	}
     }
-   
+
+    /**
+     * Returns whether or not the program has "end" opcode.
+     * If it does not, you may not want to run it - it 
+     * may run forever!
+     * @return true if @ symbol exists, false otherwise
+     */
+
+    public boolean hasEndOpcode() {
+	boolean hasEnd = false;
+	for (int j = 0; j < _xSize && hasEnd == false; j++) {
+	    for (int k = 0; k < _ySize && hasEnd == false; k++) {
+		if (_area[j][k] == '@') {
+		    hasEnd = true;
+		}
+	    }
+	}
+	return hasEnd;
+    }
+    
     /**
      * Convert the ProgramArea back into a String
      * @return String string representation of the ProgramArea

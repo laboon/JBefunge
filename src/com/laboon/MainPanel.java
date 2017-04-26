@@ -32,8 +32,7 @@ public class MainPanel extends JPanel {
     // Middle panel of main panel (contains stack label,
     // stack text, and output label
     // This is kind of ugly, but helps us avoid using a GridBagLayout
-    public JPanel _midPanel = new JPanel();
-
+    public JPanel _midPanel = new JPanel();    
 
     /**
      * Get an integer from the user.
@@ -56,7 +55,7 @@ public class MainPanel extends JPanel {
     /**
      * Get a character from the user.
      * If more than one char is entered, accept the first.
-     * If no character is entered, assume the null character (ASCII 0).
+    * If no character is entered, assume the null character (ASCII 0).
      * @param int - ASCII value of first user-entered character
      */
     
@@ -91,11 +90,31 @@ public class MainPanel extends JPanel {
      */
     
     public void run() {
+	ProgramArea pa = new ProgramArea(convertTextAreaToString());
+
+
+	
+	if (!pa.hasEndOpcode()) {
+	    int reply =
+		JOptionPane.showConfirmDialog(null,
+					      "No end opcode (@) found!\n"
+					      + "This may result in a non-terminating program.\n"
+					      + "Run anyway?",
+					      "WARNING",
+					      JOptionPane.YES_NO_OPTION);
+	    if (reply == JOptionPane.NO_OPTION) {
+		// This method is done
+		return;
+	    } else {
+		// Do nothing, continue on and run
+	    }
+	}
+	ProgramStack ps = new ProgramStack();
+	
 	// Clear non-program text
 	_stack.setText("");
 	_output.setText("");
-	ProgramStack ps = new ProgramStack();
-	ProgramArea pa = new ProgramArea(convertTextAreaToString());
+
 	// System.out.println(pa.toString());
 	long start = System.nanoTime();
 	ProgramExecutor pe = new ProgramExecutor(this, ps, pa);
@@ -164,7 +183,7 @@ public class MainPanel extends JPanel {
     
     public MainPanel() {
 	super();
-
+	
 	Font f = new Font("monospaced", Font.PLAIN, 12);
 	
 	_ta.setFont(f);

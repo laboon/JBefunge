@@ -133,6 +133,23 @@ public class ProgramAreaTest {
 	assertEquals(pa.getOpCode(2, 9000), (char) 0);
     }
 
+    // Check to see that if an @ exists, hasEndOpcode() returns true
+    // Base case
+    @Test
+    public void testHasEndTrue() {
+	ProgramArea pa = new ProgramArea("123456@");
+	assertEquals(true, pa.hasEndOpcode());
+    }
+
+    // Check to see that if an @ does NOT exist, hasEndOpcode() returns false
+    // Base case
+    @Test
+    public void testHasEndFalse() {
+	ProgramArea pa = new ProgramArea("123456");
+	assertEquals(false, pa.hasEndOpcode());
+    }
+
+    
     // Test that toString works correctly for an empty program
     // Given an empty program area, check that all strings are spaces
     // separated by newlines
