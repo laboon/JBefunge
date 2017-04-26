@@ -7,11 +7,11 @@ package com.laboon;
 
 public class ProgramArea {
 
-    // Default size of board is 100x100
+    // Default size of board is 80x80
     // Note that we currently do not have the option to extend it
 
-    private final int DEFAULT_X_SIZE = 100;
-    private final int DEFAULT_Y_SIZE = 100;
+    private final int DEFAULT_X_SIZE = 80;
+    private final int DEFAULT_Y_SIZE = 80;
 
     // The actual char array holding the program.
     // Converted from a string.

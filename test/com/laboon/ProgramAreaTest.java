@@ -14,14 +14,14 @@ public class ProgramAreaTest {
     @Test
     public void testDefaultXSize() {
 	ProgramArea pa = new ProgramArea();
-	assertEquals(pa._xSize, 100);
+	assertEquals(pa._xSize, 80);
     }
 
     // Test default Y size is correct
     @Test
     public void testDefaultYSize() {
 	ProgramArea pa = new ProgramArea();
-	assertEquals(pa._ySize, 100);
+	assertEquals(pa._ySize, 80);
     }
     
     // Test that the default will have program area filled up with spaces
