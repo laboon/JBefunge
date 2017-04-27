@@ -81,7 +81,7 @@ public class MainWindow extends JFrame {
         menuItem = new JMenuItem("Open file");
         menuItem.setMnemonic(KeyEvent.VK_T);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_1, ActionEvent.ALT_MASK));
+                KeyEvent.VK_O, ActionEvent.ALT_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription(
                 "Open Befunge file");
         menu.add(menuItem);
@@ -89,7 +89,7 @@ public class MainWindow extends JFrame {
         menuItem = new JMenuItem("Save file");
         menuItem.setMnemonic(KeyEvent.VK_S);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_2, ActionEvent.ALT_MASK));
+                KeyEvent.VK_S, ActionEvent.ALT_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription(
                 "Save Befunge file");
         menu.add(menuItem);
@@ -97,9 +97,10 @@ public class MainWindow extends JFrame {
 	menuItem = new JMenuItem("Quit");
         menuItem.setMnemonic(KeyEvent.VK_Q);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_3, ActionEvent.ALT_MASK));
+                KeyEvent.VK_Q, ActionEvent.ALT_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription(
                 "Quit IDE");
+	menuItem.addActionListener(new QuitListener());
         menu.add(menuItem);
 
         //Build second menu in the menu bar.
