@@ -83,7 +83,7 @@ public class MainPanel extends JPanel {
      * @return String the text in the text area
      */
     
-    public String convertTextAreaToString() {
+    public String getTextArea() {
 
 	String text = _ta.getText();
 	if (text == null) {
@@ -97,7 +97,7 @@ public class MainPanel extends JPanel {
      */
     
     public void run() {
-	ProgramArea pa = new ProgramArea(convertTextAreaToString());
+	ProgramArea pa = new ProgramArea(getTextArea());
 
 
 	

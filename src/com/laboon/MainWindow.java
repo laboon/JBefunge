@@ -11,31 +11,18 @@ public class MainWindow extends JFrame {
     private final int HEIGHT = 600;
     private final int WIDTH = 800;
     
-    private JFrame _frame = new JFrame("JBefunge");
-
     private MainPanel _mainPanel;
 
     private ButtonPanel _buttonPanel;
 
-    private JMenuBar _menuBar;
+    public void setProgramArea(String p) {
+	_mainPanel.setTextArea(p);
+    }
 
-    // File menu and its menu items
-    private JMenu _fileMenu;
-
-    private JMenuItem _open;
-    private JMenuItem _save;
-    private JMenuItem _exit;
+    public String getProgramArea() {
+	return _mainPanel.getTextArea();
+    }
     
-    // Run menu and its menu items
-    
-    private JMenu _runMenu;
-
-    private JMenuItem _run;
-    private JMenuItem _step;
-
-    JTextArea output;
-    JScrollPane scrollPane;
- 
     public JMenuBar createMenuBar() {
 	
         JMenuBar menuBar;
@@ -61,6 +48,7 @@ public class MainWindow extends JFrame {
                 KeyEvent.VK_O, ActionEvent.ALT_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription(
                 "Open Befunge file");
+	menuItem.addActionListener(new OpenListener());
         menu.add(menuItem);
 
         menuItem = new JMenuItem("Save file");
@@ -69,6 +57,8 @@ public class MainWindow extends JFrame {
                 KeyEvent.VK_S, ActionEvent.ALT_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription(
                 "Save Befunge file");
+	menuItem.addActionListener(new SaveListener());
+
         menu.add(menuItem);
 
 	menuItem = new JMenuItem("Quit");
@@ -165,6 +155,10 @@ public class MainWindow extends JFrame {
 	_mainPanel = new MainPanel();
 
 	_buttonPanel = new ButtonPanel(_mainPanel);
+
+	// Provide static ref to main GUI
+	SystemSettings._mainWindow = this;
+	SystemSettings._mainPanel = _mainPanel;
 	
 	this.add(_mainPanel, BorderLayout.NORTH);
 	this.add(_buttonPanel, BorderLayout.SOUTH);
