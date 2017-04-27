@@ -29,8 +29,6 @@ public class MainPanel extends JPanel {
     // Label for "Program Output"
     public JLabel _outputLabel;
 
-
-    
     // Middle panel of main panel (contains stack label,
     // stack text, and output label
     // This is kind of ugly, but helps us avoid using a GridBagLayout

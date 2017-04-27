@@ -29,9 +29,20 @@ This application will execute Befunge programs.  See https://esolangs.org/wiki/B
 4. Now to execute tests.  Go to the `./test` subdirectory.
 5. Type `java -cp .:../src:./junit-4.12.jar:./hamcrest-core-1.3.jar com.laboon.TestRunner`.  This will execute the TestRunner.  When you first clone the repo, all tests should pass.
 
-### Tips
+### Sample Befunge Programs
 
-1. I recommend having two terminals / command prompts open - one for executing tests and one for running the program.
-2. Remember that the program should have the EXACT same output, only be faster than before.  If the output is not the same something is wrong.
-3. Several places in the code are commented-out debugging statements.  These may help you if the program is not doing what you think it should be doing.
+#### FizzBuzz
 
+```
+0v       v    <
+ >91+91+*>:1-:|
+              $    >"zziF",,,,v
+              >:3%!|v         <
+                         >"zzuB",,,,v           @
+                   >>:5%!|v         <    >91+,:!|
+                               >$        ^      
+                         >>:3%!|    >$   ^ 
+                               >:5%!|
+                                    >.   ^            
+              ^                                 <
+```
