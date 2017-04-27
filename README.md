@@ -3,23 +3,15 @@ Java Befunge-93
 
 This application will execute Befunge programs.  See https://esolangs.org/wiki/Befunge for a description of the language as well as sample Befunge programs.
 
-You do not need to execute arbitrary Befunge programs, or write your own.  All problems are in the interpreting of the commands.  Note that the problems we are looking for are not in the graphical display, nor are they in the Befunge programs themselves.  
-
-You may use the provided FizzBuzz program (coded by yours truly) to track down the performance issues.  Simply copy and paste it into the uppermost (Program Area) textbox.
-
-Although it is not necessary, if you do find any functional defects in my Befunge program implementation, it will mean bonus points for you.
-
-## Performance Issues
-
-There are at least THREE particular methods causing performance issues.
-
-You need to find these methods using VisualVM, write at least three pinning tests for each non-performantmethod, and fix them.  All of your tests should be passing both before and after you make the changes!
-
-This program has gaps in its test coverage.  Be sure when writing pinning tests tht you cover any gaps for the particular method you are working on!
-
 ## To Execute
 
+### Easy Method
+
+1. If you are running on a Unix-like system, you should be able to execute the `compile.sh`, `run.sh`, and `runTests.sh` scripts to compile, run, and run the tests, respectively.
+
 ### Compilation of Source and Tests
+
+#### Details
 
 1. Let's start by compiling the program itself.  `cd` to the `./src` subdirectory
 2. Type the command `javac ./com/laboon/*.java`
