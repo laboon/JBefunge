@@ -23,17 +23,26 @@ public class MainPanel extends JPanel {
     public JTextArea _output = new JTextArea(10, 40);
     public JScrollPane _outputSp = new JScrollPane(_output);
 
-    // Label for "Stack"
-    public JLabel _stackLabel = new JLabel();
+    // Label for "Program Stack"
+    public JLabel _stackLabel;
 
-    // Label for "Output"
-    public JLabel _outputLabel = new JLabel();
+    // Label for "Program Output"
+    public JLabel _outputLabel;
 
+
+    
     // Middle panel of main panel (contains stack label,
     // stack text, and output label
     // This is kind of ugly, but helps us avoid using a GridBagLayout
     public JPanel _midPanel = new JPanel();    
 
+    public void setTextArea(String text) {
+	if (text == null) {
+	    text = "";
+	}
+	_ta.setText(text);
+    }
+    
     /**
      * Get an integer from the user.
      * If the integer is unparseable in ANY way (e.g., nothing entered,

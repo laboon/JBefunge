@@ -37,29 +37,6 @@ public class MainWindow extends JFrame {
     JScrollPane scrollPane;
  
     public JMenuBar createMenuBar() {
-
-	// // // Add menu options
-	// // _menuBar = new JMenuBar();
-	// // _fileMenu = new JMenu("File");
-	// // _runMenu = new JMenu("Run");
-
-	// // _open = new JMenuItem("Open");
-	// // _save = new JMenuItem("Save");
-	// // _exit = new JMenuItem("Exit");
-    
-	// // _run = new JMenuItem("Run");
-	// // _step = new JMenuItem("Step");
-
-	// // _fileMenu.add(_open);
-	// // _fileMenu.add(_save);
-	// // _fileMenu.add(_exit);
-	
-	// // _runMenu.add(_run);
-	// // _runMenu.add(_step);
-
-	// // _menuBar.add(_fileMenu);
-	// // _menuBar.add(_runMenu);
-
 	
         JMenuBar menuBar;
         JMenu menu;
@@ -103,7 +80,29 @@ public class MainWindow extends JFrame {
 	menuItem.addActionListener(new QuitListener());
         menu.add(menuItem);
 
-        //Build second menu in the menu bar.
+	// Build "View" menu in the menu bar
+        menu = new JMenu("View");
+        menu.setMnemonic(KeyEvent.VK_V);
+        menu.getAccessibleContext().setAccessibleDescription(
+                "View options");
+        menuBar.add(menu);
+
+
+        cbMenuItem = new JCheckBoxMenuItem("Program Area");
+        cbMenuItem.setMnemonic(KeyEvent.VK_A);
+        menu.add(cbMenuItem);
+
+	cbMenuItem = new JCheckBoxMenuItem("Program Stack");
+        cbMenuItem.setMnemonic(KeyEvent.VK_T);
+        menu.add(cbMenuItem);
+
+	cbMenuItem = new JCheckBoxMenuItem("Program Output");
+        cbMenuItem.setMnemonic(KeyEvent.VK_U);
+        menu.add(cbMenuItem);
+
+	
+	
+        // Build "Run" menu in the menu bar.
         menu = new JMenu("Run");
         menu.setMnemonic(KeyEvent.VK_R);
         menu.getAccessibleContext().setAccessibleDescription(
@@ -144,23 +143,7 @@ public class MainWindow extends JFrame {
  
         return menuBar;
     }
- 
-    public Container createContentPane() {
-        //Create the content-pane-to-be.
-        JPanel contentPane = new JPanel(new BorderLayout());
-        contentPane.setOpaque(true);
- 
-        //Create a scrolled text area.
-        output = new JTextArea(5, 30);
-        output.setEditable(false);
-        scrollPane = new JScrollPane(output);
- 
-        //Add the text area to the content pane.
-        contentPane.add(scrollPane, BorderLayout.CENTER);
- 
-        return contentPane;
-    }
-    
+     
     
     public MainWindow() {
 
@@ -170,8 +153,7 @@ public class MainWindow extends JFrame {
  
         //Create and set up the content pane.
         this.setJMenuBar(createMenuBar());
-	this.setContentPane(createContentPane());
- 
+
         //Display the window.
 	
 	this.setSize(WIDTH, HEIGHT);
