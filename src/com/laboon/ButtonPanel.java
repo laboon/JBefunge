@@ -9,6 +9,8 @@ public class ButtonPanel extends JPanel {
 
     private StepButton _step;
 
+    private StopButton _stop;
+
     /**
      * Constructor - add all of the buttons to
      * the ButtonPanel.
@@ -21,11 +23,14 @@ public class ButtonPanel extends JPanel {
 	
 	_run = new RunButton(m);
 	// _step = new StepButton(m);
+	_stop = new StopButton(m);
+	
 	setLayout(new FlowLayout());
 
 	// Add all of the buttons
 	
 	add(_run);
+	add(_stop);
 	// add(_step);
     }
     

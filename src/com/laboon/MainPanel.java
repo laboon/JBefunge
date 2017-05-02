@@ -128,6 +128,13 @@ public class MainPanel extends JPanel {
 	    return true;
 	}
     }    
+
+    /**
+     * Halt execution immediately
+     */
+    public void stop() {
+    }
+	
     
     /**
      * Run until complete
@@ -161,6 +168,8 @@ public class MainPanel extends JPanel {
 	}
     }
 
+    
+    
 
     /**
      * Print character to the output text area
@@ -174,7 +183,7 @@ public class MainPanel extends JPanel {
 
     /**
      * Print integer to the output text area
-     * @param i int to print
+     * @param i - int to print
      */
 
     

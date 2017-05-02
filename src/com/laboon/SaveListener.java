@@ -7,30 +7,26 @@ import java.util.*;
 import javax.swing.*;
 
 public class SaveListener implements ActionListener {
-
-
-    public void saveFile(File f, String text) {
-	try (PrintWriter out = new PrintWriter(f)) {
-	    out.println(text);
-	} catch (IOException ioex) {
-	    System.out.println("Could not write to file " + f.toString());
-	}
-    }
     
     public void actionPerformed(ActionEvent e) {
-	final JFileChooser fc = new JFileChooser();
+	File f;
 	MainWindow mw = SystemSettings.getMainWindow();
-	int returnVal = fc.showSaveDialog((Component) e.getSource());
-	if (returnVal == JFileChooser.APPROVE_OPTION) {
 
-            File f = fc.getSelectedFile();
-	    String text = mw.getProgramArea();
-	    saveFile(f, text);
-	    String fileName = f.toString();
-	    SystemSettings.setFile(fileName);
-	    mw.setTitle(fileName);
-        } else {
-	    // Cancel, do nothing
-        }
+	if (SystemSettings.getFile() == "") {
+	    final JFileChooser fc = new JFileChooser();
+	    int returnVal = fc.showSaveDialog((Component) e.getSource());
+	    if (returnVal == JFileChooser.APPROVE_OPTION) {
+		f = fc.getSelectedFile();
+	    } else {
+		return;
+	    }
+	} else {
+	    f = new File(SystemSettings.getFile());
+	}
+	String text = mw.getProgramArea();
+	GeneralUtils.saveFile(f, text);
+	String fileName = f.toString();
+	SystemSettings.setFile(fileName);
+	mw.setTitle(fileName);
     }
 }

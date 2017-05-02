@@ -1,5 +1,8 @@
 package com.laboon;
 
+import java.io.*;
+import java.util.*;
+
 public class GeneralUtils {
 
     /**
@@ -22,5 +25,23 @@ public class GeneralUtils {
 	toReturn += "]";
 	return toReturn;
     }
+
+    /**
+     * Given a file to write to, and data to write to it, 
+     * it will write the data.
+     * If there are _any_ issues, simply writes an error message.
+     * SIDE EFFECT: Writes data to specified file.
+     * @param f file to write to
+     * @param text text to write to
+     */
+    
+    public static void saveFile(File f, String text) {
+	try (PrintWriter out = new PrintWriter(f)) {
+	    out.println(text);
+	} catch (IOException ioex) {
+	    System.out.println("Could not write to file " + f.toString());
+	}
+    }
+
 
 }

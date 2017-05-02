@@ -58,9 +58,17 @@ public class MainWindow extends JFrame {
         menuItem.getAccessibleContext().setAccessibleDescription(
                 "Save Befunge file");
 	menuItem.addActionListener(new SaveListener());
-
         menu.add(menuItem);
 
+        menuItem = new JMenuItem("Save As...");
+        menuItem.setMnemonic(KeyEvent.VK_A);
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_A, ActionEvent.ALT_MASK));
+        menuItem.getAccessibleContext().setAccessibleDescription(
+                "Save Befunge file as");
+	menuItem.addActionListener(new SaveAsListener());
+        menu.add(menuItem);
+	
 	menuItem = new JMenuItem("Quit");
         menuItem.setMnemonic(KeyEvent.VK_Q);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(

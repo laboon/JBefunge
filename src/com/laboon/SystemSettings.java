@@ -21,18 +21,20 @@ public class SystemSettings {
     
     private static boolean _timer = false;
     
-    private static boolean _checkSyntax = false;
-
     private static boolean _checkEndOpcode = false;
 
-    private static boolean _viewProgramArea = true;
-
-    private static boolean _viewProgramStack = true;
-
-    private static boolean _viewProgramOutput = true;
-
+    private static boolean _programRunning = false;
+    
     private static String _file = "";
 
+    public static synchronized boolean getProgramRunning() {
+	return _programRunning;
+    }
+
+    public static synchronized void setProgramRunning(boolean pr) {
+	_programRunning = pr;
+    }
+    
     public static synchronized boolean checkEndOpcode() {
 	return _checkEndOpcode;
     }
@@ -47,13 +49,6 @@ public class SystemSettings {
 
     public static synchronized void setTimer(boolean timer) {
 	_timer = timer;
-    }
-    public static synchronized boolean checkSyntax() {
-	return _checkSyntax;
-    }
-
-    public static synchronized void setCheckSyntax(boolean cs) {
-	_checkSyntax = cs;
     }
     
     public static synchronized MainWindow getMainWindow() {
@@ -72,8 +67,6 @@ public class SystemSettings {
 	_mainPanel = mp;
     }
 
-    
-    
     public static synchronized String getFile() {
 	return _file;
     }
