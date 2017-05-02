@@ -68,29 +68,7 @@ public class MainWindow extends JFrame {
         menuItem.getAccessibleContext().setAccessibleDescription(
                 "Quit IDE");
 	menuItem.addActionListener(new QuitListener());
-        menu.add(menuItem);
-
-	// Build "View" menu in the menu bar
-        menu = new JMenu("View");
-        menu.setMnemonic(KeyEvent.VK_V);
-        menu.getAccessibleContext().setAccessibleDescription(
-                "View options");
-        menuBar.add(menu);
-
-
-        cbMenuItem = new JCheckBoxMenuItem("Program Area");
-        cbMenuItem.setMnemonic(KeyEvent.VK_A);
-        menu.add(cbMenuItem);
-
-	cbMenuItem = new JCheckBoxMenuItem("Program Stack");
-        cbMenuItem.setMnemonic(KeyEvent.VK_T);
-        menu.add(cbMenuItem);
-
-	cbMenuItem = new JCheckBoxMenuItem("Program Output");
-        cbMenuItem.setMnemonic(KeyEvent.VK_U);
-        menu.add(cbMenuItem);
-
-	
+        menu.add(menuItem);	
 	
         // Build "Run" menu in the menu bar.
         menu = new JMenu("Run");
@@ -118,17 +96,15 @@ public class MainWindow extends JFrame {
 	// Separator
         menu.addSeparator();
 	
-        //a group of check box menu items
+        //a group of check box menu items for different options
         cbMenuItem = new JCheckBoxMenuItem("Time program");
         cbMenuItem.setMnemonic(KeyEvent.VK_T);
+	cbMenuItem.addItemListener(new TimerListener());
         menu.add(cbMenuItem);
  
         cbMenuItem = new JCheckBoxMenuItem("Check for end opcode");
         cbMenuItem.setMnemonic(KeyEvent.VK_C);
-        menu.add(cbMenuItem);
-
-        cbMenuItem = new JCheckBoxMenuItem("Check syntax");
-        cbMenuItem.setMnemonic(KeyEvent.VK_Y);
+	cbMenuItem.addItemListener(new CheckEndOpcodeListener());
         menu.add(cbMenuItem);
  
         return menuBar;

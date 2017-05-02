@@ -91,15 +91,22 @@ public class MainPanel extends JPanel {
 	}
 	return text;
     }
-    
+
     /**
-     * Run until complete
+     * Check to see if the user wants to run the program, even if
+     * an end opcode was not found.
+     * If no end opcode is found, ask if user wishes to run.  
+     * If an end opcode is found, run without asking.
+     * SIDE EFFECT: Modal dialog pops up if no end opcode found
+     * @param pa - The ProgramArea object to be run
+     * @return boolean - true if user wishes to run, false otherwise
      */
     
-    public void run() {
-	ProgramArea pa = new ProgramArea(getTextArea());
+    public boolean checkEndOpcode(ProgramArea pa) {
 
-
+	// If the program area passed in does not have an end opcode,
+	// check to see (via modal dialog) whether or not user
+	// wishes to run.
 	
 	if (!pa.hasEndOpcode()) {
 	    int reply =
@@ -110,25 +117,48 @@ public class MainPanel extends JPanel {
 					      "WARNING",
 					      JOptionPane.YES_NO_OPTION);
 	    if (reply == JOptionPane.NO_OPTION) {
-		// This method is done
-		return;
+		// User does not wish to run, return false
+		return false;
 	    } else {
-		// Do nothing, continue on and run
+		// No end opcode was found, but user wants to run anyways
+		return true;
+	    }
+	} else {
+	    // An end opcode was found, so can just run
+	    return true;
+	}
+    }    
+    
+    /**
+     * Run until complete
+     */
+    
+    public void run() {
+	ProgramArea pa = new ProgramArea(getTextArea());
+
+	if (SystemSettings.checkEndOpcode()) {
+	    boolean cont = checkEndOpcode(pa);
+	    if (!cont) {
+		return;
 	    }
 	}
+	
 	ProgramStack ps = new ProgramStack();
 	
 	// Clear non-program text
 	_stack.setText("");
 	_output.setText("");
 
-	// System.out.println(pa.toString());
 	long start = System.nanoTime();
 	ProgramExecutor pe = new ProgramExecutor(this, ps, pa);
 	long end = System.nanoTime();
 	long time = (end - start) / 1000;
 	pe.run();
-	JOptionPane.showMessageDialog(this, "Time to execute: " + time + " microseconds");
+	
+	// Display time to execute if proper setting selected
+	if (SystemSettings.timer()) {
+	    JOptionPane.showMessageDialog(this, "Time to execute: " + time + " microseconds");
+	}
     }
 
 

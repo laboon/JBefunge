@@ -33,6 +33,29 @@ public class SystemSettings {
 
     private static String _file = "";
 
+    public static synchronized boolean checkEndOpcode() {
+	return _checkEndOpcode;
+    }
+
+    public static synchronized void setCheckEndOpcode(boolean ceo) {
+	_checkEndOpcode = ceo;
+    }
+
+    public static synchronized boolean timer() {
+	return _timer;
+    }
+
+    public static synchronized void setTimer(boolean timer) {
+	_timer = timer;
+    }
+    public static synchronized boolean checkSyntax() {
+	return _checkSyntax;
+    }
+
+    public static synchronized void setCheckSyntax(boolean cs) {
+	_checkSyntax = cs;
+    }
+    
     public static synchronized MainWindow getMainWindow() {
 	return _mainWindow;
     }

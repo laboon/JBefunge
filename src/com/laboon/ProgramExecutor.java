@@ -39,8 +39,6 @@ import java.util.*;
 // @   End program
 // 0 – 9   Push corresponding number onto the stack
 
-
-
 public class ProgramExecutor {
     
     // Random number generator.  Used solely for the '?' opcode.
