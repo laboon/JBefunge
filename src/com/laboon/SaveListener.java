@@ -19,12 +19,16 @@ public class SaveListener implements ActionListener {
     
     public void actionPerformed(ActionEvent e) {
 	final JFileChooser fc = new JFileChooser();
+	MainWindow mw = SystemSettings.getMainWindow();
 	int returnVal = fc.showSaveDialog((Component) e.getSource());
 	if (returnVal == JFileChooser.APPROVE_OPTION) {
+
             File f = fc.getSelectedFile();
-	    String text = SystemSettings._mainWindow.getProgramArea();
+	    String text = mw.getProgramArea();
 	    saveFile(f, text);
-	    // TODO: Save this to file
+	    String fileName = f.toString();
+	    SystemSettings.setFile(fileName);
+	    mw.setTitle(fileName);
         } else {
 	    // Cancel, do nothing
         }

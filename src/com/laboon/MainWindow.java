@@ -149,6 +149,8 @@ public class MainWindow extends JFrame {
 	this.setSize(WIDTH, HEIGHT);
 	// Close program when window is closed
 	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	this.setTitle("UNTITLED");
 	
 	// Add Main Panel and Button Panel
 	
@@ -156,9 +158,9 @@ public class MainWindow extends JFrame {
 
 	_buttonPanel = new ButtonPanel(_mainPanel);
 
-	// Provide static ref to main GUI
-	SystemSettings._mainWindow = this;
-	SystemSettings._mainPanel = _mainPanel;
+	// Provide static ref to main GUI elements
+	SystemSettings.setMainWindow(this);
+	SystemSettings.setMainPanel(_mainPanel);
 	
 	this.add(_mainPanel, BorderLayout.NORTH);
 	this.add(_buttonPanel, BorderLayout.SOUTH);

@@ -27,14 +27,14 @@ public class OpenListener implements ActionListener {
     }
     
     public void actionPerformed(ActionEvent e) {
-	Component mw = (Component) e.getSource();
+	MainWindow mw = SystemSettings.getMainWindow();
 	final JFileChooser fc = new JFileChooser();
 	int returnVal = fc.showOpenDialog(mw);
 	if (returnVal == JFileChooser.APPROVE_OPTION) {
             File f = fc.getSelectedFile();
 	    System.out.println("Selected " + f.toString());
 	    String text = openFile(f);
-	    SystemSettings._mainWindow.setProgramArea(text);
+	    mw.setProgramArea(text);
 
         } else {
 	    // Cancel, do nothing
