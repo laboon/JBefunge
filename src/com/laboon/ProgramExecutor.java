@@ -660,7 +660,9 @@ public class ProgramExecutor {
     
     public void run() {
 	// Continue while program is not finished running
-	while (!_programComplete) {
+	// AND stop button not pressed
+
+	while (!_programComplete && !SystemSettings.checkForStop()) {
 	    // Uncomment for debugging
 	    // System.out.println("Executing @ [" + _x + "," + _y + "]");
 	    resetUpdates();

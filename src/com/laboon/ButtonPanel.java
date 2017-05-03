@@ -11,6 +11,17 @@ public class ButtonPanel extends JPanel {
 
     private StopButton _stop;
 
+    public void noRunMode() {
+	_run.setEnabled(true);
+	_stop.setEnabled(false);
+    }
+
+    public void runMode() {
+	_run.setEnabled(false);
+	_stop.setEnabled(true);
+    }
+
+    
     /**
      * Constructor - add all of the buttons to
      * the ButtonPanel.

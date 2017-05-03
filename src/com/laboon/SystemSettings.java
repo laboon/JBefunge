@@ -18,15 +18,33 @@ public class SystemSettings {
     private static MainWindow _mainWindow = null;
 
     private static MainPanel _mainPanel = null;
+
+    private static ButtonPanel _buttonPanel = null;
     
     private static boolean _timer = false;
     
     private static boolean _checkEndOpcode = false;
 
     private static boolean _programRunning = false;
+
+    private static boolean _stopPressed = false;
     
     private static String _file = "";
 
+    public static synchronized boolean checkForStop() {
+	if (_stopPressed) {
+	    // return true, but first reset _stopPressed
+	    _stopPressed = false;
+	    return true;
+	} else {
+	    return false;
+	}
+    }
+
+    public static synchronized void setStop(boolean s) {
+	_stopPressed = s;
+    }
+    
     public static synchronized boolean getProgramRunning() {
 	return _programRunning;
     }
@@ -67,6 +85,15 @@ public class SystemSettings {
 	_mainPanel = mp;
     }
 
+    public static synchronized ButtonPanel getButtonPanel() {
+	return _buttonPanel;
+    }
+
+    public static synchronized void setButtonPanel(ButtonPanel bp) {
+	_buttonPanel = bp;
+    }
+
+    
     public static synchronized String getFile() {
 	return _file;
     }

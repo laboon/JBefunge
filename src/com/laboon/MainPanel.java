@@ -133,14 +133,18 @@ public class MainPanel extends JPanel {
      * Halt execution immediately
      */
     public void stop() {
+	SystemSettings.setStop(true);
     }
-	
-    
+
     /**
      * Run until complete
      */
     
     public void run() {
+
+	// Put Button GUI in Run Mode 
+	SystemSettings.getButtonPanel().runMode();
+	
 	ProgramArea pa = new ProgramArea(getTextArea());
 
 	if (SystemSettings.checkEndOpcode()) {
@@ -156,6 +160,8 @@ public class MainPanel extends JPanel {
 	_stack.setText("");
 	_output.setText("");
 
+	SystemSettings.setStop(false);
+	
 	long start = System.nanoTime();
 	ProgramExecutor pe = new ProgramExecutor(this, ps, pa);
 	long end = System.nanoTime();
@@ -166,9 +172,9 @@ public class MainPanel extends JPanel {
 	if (SystemSettings.timer()) {
 	    JOptionPane.showMessageDialog(this, "Time to execute: " + time + " microseconds");
 	}
-    }
 
-    
+	SystemSettings.getButtonPanel().noRunMode();
+    }
     
 
     /**

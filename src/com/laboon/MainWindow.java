@@ -141,10 +141,12 @@ public class MainWindow extends JFrame {
 	_mainPanel = new MainPanel();
 
 	_buttonPanel = new ButtonPanel(_mainPanel);
-
+	_buttonPanel.noRunMode();
+	
 	// Provide static ref to main GUI elements
 	SystemSettings.setMainWindow(this);
 	SystemSettings.setMainPanel(_mainPanel);
+	SystemSettings.setButtonPanel(_buttonPanel);
 	
 	this.add(_mainPanel, BorderLayout.NORTH);
 	this.add(_buttonPanel, BorderLayout.SOUTH);

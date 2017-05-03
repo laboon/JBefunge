@@ -17,7 +17,9 @@ public class RunButton extends JButton {
     class RunButtonListener implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
-	    _m.run();
+	    Thread t = new Thread(() ->
+				  _m.run());
+	    t.start();
 	}
     }    
     
