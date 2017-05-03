@@ -658,13 +658,18 @@ public class ProgramExecutor {
      * Run current program for this Executor
      */
     
-    public void run() {
+    public void run(int sleepTime) {
 	// Continue while program is not finished running
 	// AND stop button not pressed
 
 	while (!_programComplete && !SystemSettings.checkForStop()) {
 	    // Uncomment for debugging
 	    // System.out.println("Executing @ [" + _x + "," + _y + "]");
+	    try {
+		Thread.sleep(sleepTime);
+	    } catch (InterruptedException iex) {
+		// ignore
+	    }
 	    resetUpdates();
 	    executeOneStep();
 	    _mp.setStack(_ps.toString());

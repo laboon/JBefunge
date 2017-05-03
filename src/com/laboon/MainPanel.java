@@ -4,6 +4,11 @@ import java.awt.*;
 import javax.swing.*;
 import java.util.*;
 
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.HighlightPainter;
+
 /**
  * The Main Panel of the program.
  * Along with the Button Panel, the entire main GUI frame.
@@ -137,11 +142,22 @@ public class MainPanel extends JPanel {
     }
 
     /**
+     * Highlight character in program area
+     * SIDE EFFECT: Character highlighted on screen
+     * @param x - x coordinate of character
+     * @param y - y coordinate of character
+     */
+
+    public void highlight(int x, int y) {
+	// TODO
+    }
+
+    /**
      * Run until complete
      */
-    
-    public void run() {
 
+    
+    public void runSpeed(int sleepTime) {
 	// Put Button GUI in Run Mode 
 	SystemSettings.getButtonPanel().runMode();
 	
@@ -166,7 +182,7 @@ public class MainPanel extends JPanel {
 	ProgramExecutor pe = new ProgramExecutor(this, ps, pa);
 	long end = System.nanoTime();
 	long time = (end - start) / 1000;
-	pe.run();
+	pe.run(sleepTime);
 	
 	// Display time to execute if proper setting selected
 	if (SystemSettings.timer()) {
@@ -174,8 +190,22 @@ public class MainPanel extends JPanel {
 	}
 
 	SystemSettings.getButtonPanel().noRunMode();
+
     }
     
+    
+    public void run() {
+	runSpeed(0);
+    }
+
+    public void walk() {
+	runSpeed(50);
+    }
+
+    public void mosey() {
+	runSpeed(500);
+    }
+
 
     /**
      * Print character to the output text area
