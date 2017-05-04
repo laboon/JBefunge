@@ -77,6 +77,48 @@ public class MainWindow extends JFrame {
                 "Quit IDE");
 	menuItem.addActionListener(new QuitListener());
         menu.add(menuItem);	
+
+        //Build the "Color" menu.
+	
+        menu = new JMenu("Color");
+        menu.setMnemonic(KeyEvent.VK_C);
+        menu.getAccessibleContext().setAccessibleDescription(
+                "Color options");
+        menuBar.add(menu);
+
+	ButtonGroup colorGroup = new ButtonGroup();
+	
+	JRadioButtonMenuItem colorRadioItem = new JRadioButtonMenuItem("Red");
+	colorRadioItem.addItemListener(new ColorListener());
+	colorGroup.add(colorRadioItem);
+	menu.add(colorRadioItem);
+
+	colorRadioItem = new JRadioButtonMenuItem("Yellow");
+	colorRadioItem.addItemListener(new ColorListener());
+	colorRadioItem.setSelected(true);
+	colorGroup.add(colorRadioItem);
+	menu.add(colorRadioItem);
+
+	colorRadioItem = new JRadioButtonMenuItem("Blue");
+	colorRadioItem.addItemListener(new ColorListener());
+	colorGroup.add(colorRadioItem);
+	menu.add(colorRadioItem);
+
+	colorRadioItem = new JRadioButtonMenuItem("Pink");
+	colorRadioItem.addItemListener(new ColorListener());
+	colorGroup.add(colorRadioItem);
+	menu.add(colorRadioItem);
+
+	colorRadioItem = new JRadioButtonMenuItem("Green");
+	colorRadioItem.addItemListener(new ColorListener());
+	colorGroup.add(colorRadioItem);
+	menu.add(colorRadioItem);
+
+	colorRadioItem = new JRadioButtonMenuItem("Orange");
+	colorRadioItem.addItemListener(new ColorListener());
+	colorGroup.add(colorRadioItem);
+	menu.add(colorRadioItem);
+	
 	
         // Build "Run" menu in the menu bar.
         menu = new JMenu("Run");

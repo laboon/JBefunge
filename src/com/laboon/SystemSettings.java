@@ -33,6 +33,16 @@ public class SystemSettings {
     
     private static String _file = "";
 
+    private static Color _color = Color.YELLOW;
+
+    public static synchronized void setColor(Color c) {
+	_color = c;
+    }
+
+    public static synchronized Color getColor() {
+	return _color;
+    }
+    
     public static synchronized void setStepMode(boolean stepMode) {
 	_stepMode = stepMode;
     }

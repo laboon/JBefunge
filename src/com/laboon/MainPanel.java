@@ -297,7 +297,8 @@ public class MainPanel extends JPanel {
 	_pa.getHighlighter().removeAllHighlights();
 	try {
 	    DefaultHighlighter.DefaultHighlightPainter highlightPainter = 
-		new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+		new DefaultHighlighter.DefaultHighlightPainter(
+							       SystemSettings.getColor());
 	    int start = convertLocation(x, y);
 	    int end = start + 1;
 	    if (start > 0) {
