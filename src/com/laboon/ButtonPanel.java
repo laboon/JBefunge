@@ -27,6 +27,14 @@ public class ButtonPanel extends JPanel {
 	_run.setEnabled(false);
 	_walk.setEnabled(false);
 	_mosey.setEnabled(false);
+	_step.setEnabled(false);
+	_stop.setEnabled(true);
+    }
+
+    public void stepMode() {
+	_run.setEnabled(false);
+	_walk.setEnabled(false);
+	_mosey.setEnabled(false);
 	_step.setEnabled(true);
 	_stop.setEnabled(true);
     }

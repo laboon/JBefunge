@@ -17,7 +17,12 @@ public class StepButton extends JButton {
     class StepButtonListener implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
-	    // _m.step();
+	    if (SystemSettings.inStepMode()) {
+		_m.step();
+	    } else {
+		SystemSettings.setStepMode(true);
+		_m.firstStep();
+	    }
 	}
     }    
     

@@ -17,6 +17,15 @@ public class MainPanel extends JPanel {
     public JTextArea _pa = new JTextArea(1, 40);
     public JScrollPane _paSp = new JScrollPane(_pa);
 
+    // Actual ProgramArea, only created when running/stepping
+    public ProgramArea _programArea = null;
+
+    // Actual ProgramStack, only created when running/stepping
+    public ProgramStack _programStack = null;
+
+    // Actual ProgramExecutor, only created when running/stepping
+    public ProgramExecutor _programExecutor = null;
+    
     // The text area for the stack display and its scrollpane
     public JTextArea _stack = new JTextArea(1, 40);
     public JScrollPane _stackSp = new JScrollPane(_stack);
@@ -134,20 +143,59 @@ public class MainPanel extends JPanel {
     /**
      * Halt execution immediately
      */
+    
     public void stop() {
+	_pa.getHighlighter().removeAllHighlights();
+	SystemSettings.getButtonPanel().noRunMode();
 	SystemSettings.setStop(true);
+	SystemSettings.setProgramRunning(false);
+	SystemSettings.setStepMode(false);
     }
 
     /**
-     * Highlight character in program area
-     * SIDE EFFECT: Character highlighted on screen
-     * @param x - x coordinate of character
-     * @param y - y coordinate of character
+     * Perform first step of the program in step mode
+     */
+    
+    public void firstStep() {
+    	_programArea = new ProgramArea(getTextArea());
+
+	if (SystemSettings.checkEndOpcode()) {
+	    boolean cont = checkEndOpcode(_programArea);
+	    if (!cont) {
+		return;
+	    }
+	}
+
+    	SystemSettings.getButtonPanel().stepMode();
+	
+	_programStack = new ProgramStack();
+	_programExecutor = new ProgramExecutor(this, _programStack, _programArea);
+	
+	// Clear non-program text
+	_stack.setText("");
+	_output.setText("");
+
+	SystemSettings.setStop(false);
+	
+	boolean complete = _programExecutor.step();
+	if (complete) {
+	    stop();
+	}
+	
+    }
+
+    
+    /**
+     * Step through next step of the program
      */
 
-    public void highlight(int x, int y) {
-	// TODO
-    }
+    public void step() {
+	boolean complete = _programExecutor.step();
+	if (complete) {
+	    stop();
+	}
+
+    }	
 
     /**
      * Run until complete
@@ -158,16 +206,16 @@ public class MainPanel extends JPanel {
 	// Put Button GUI in Run Mode 
 	SystemSettings.getButtonPanel().runMode();
 	
-	ProgramArea pa = new ProgramArea(getTextArea());
+	_programArea = new ProgramArea(getTextArea());
 
 	if (SystemSettings.checkEndOpcode()) {
-	    boolean cont = checkEndOpcode(pa);
+	    boolean cont = checkEndOpcode(_programArea);
 	    if (!cont) {
 		return;
 	    }
 	}
 	
-	ProgramStack ps = new ProgramStack();
+	_programStack = new ProgramStack();
 	
 	// Clear non-program text
 	_stack.setText("");
@@ -176,10 +224,10 @@ public class MainPanel extends JPanel {
 	SystemSettings.setStop(false);
 	
 	long start = System.nanoTime();
-	ProgramExecutor pe = new ProgramExecutor(this, ps, pa);
+	_programExecutor = new ProgramExecutor(this, _programStack, _programArea);
 	long end = System.nanoTime();
 	long time = (end - start) / 1000;
-	pe.run(sleepTime);
+	_programExecutor.run(sleepTime);
 	
 	// Display time to execute if proper setting selected
 	if (SystemSettings.timer()) {
@@ -247,15 +295,20 @@ public class MainPanel extends JPanel {
     
     public void highlightChar(ProgramArea p, int x, int y) {
 	_pa.getHighlighter().removeAllHighlights();
-	DefaultHighlighter.DefaultHighlightPainter highlightPainter = 
-	    new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
-	int start = convertLocation(x, y);
-	int end = start + 1;
-	System.out.println("Converting " + x + ", " + y + " to " + start);
 	try {
-	    _pa.getHighlighter().addHighlight(start, end, 
-					      highlightPainter);
-	} catch (BadLocationException blex) {
+	    DefaultHighlighter.DefaultHighlightPainter highlightPainter = 
+		new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+	    int start = convertLocation(x, y);
+	    int end = start + 1;
+	    if (start > 0) {
+		try {
+		    _pa.getHighlighter().addHighlight(start, end, 
+						      highlightPainter);
+		} catch (BadLocationException blex) {
+		    // just ignore for now
+		}
+	    }
+	} catch (ArrayIndexOutOfBoundsException oobex) {
 	    // just ignore for now
 	}
     }
@@ -275,23 +328,22 @@ public class MainPanel extends JPanel {
      */
     private int convertLocation(int x, int y) {
 	char[] text = _pa.getText().toCharArray();
-	System.out.println("convertLocation: " + x + ", " + y
-			   + " : "
-			   + GeneralUtils.generateCharString(text));
 	int c = 0;
 	int curX = 0;
 	int curY = 0;
 
-	while (curX != x || curY != y) {
-	    System.out.println("curX = " + curX + " / curY = " + curY
-			       + " -> " + text[c]);
-	    if (text[c] == '\n') {
-		curX++;
-		curY = 0;
-	    } else {
-		curY++;
+	try {
+	    while (curX != x || curY != y) {
+		if (text[c] == '\n') {
+		    curX++;
+		    curY = 0;
+		} else {
+		    curY++;
+		}
+		c++;
 	    }
-	    c++;
+	} catch (ArrayIndexOutOfBoundsException oobex) {
+	    c = -1;
 	}
 	return c;
     }

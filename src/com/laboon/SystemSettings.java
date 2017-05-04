@@ -27,10 +27,20 @@ public class SystemSettings {
 
     private static boolean _programRunning = false;
 
+    private static boolean _stepMode = false;
+    
     private static boolean _stopPressed = false;
     
     private static String _file = "";
 
+    public static synchronized void setStepMode(boolean stepMode) {
+	_stepMode = stepMode;
+    }
+
+    public static synchronized boolean inStepMode() {
+	return _stepMode;
+    }
+    
     public static synchronized boolean checkForStop() {
 	if (_stopPressed) {
 	    // return true, but first reset _stopPressed
