@@ -532,7 +532,7 @@ public class ProgramExecutor {
 
     /**
      *  p   A "put" call (a way to store a value for later use). 
-     * Pop three values y, x and v, then change the character at
+     * Pop three values x, y and v, then change the character at
      * the position (x,y) in the program to the character with
      * ASCII value v
      */
