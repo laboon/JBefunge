@@ -665,13 +665,19 @@ public class ProgramExecutor {
 	while (!_programComplete && !SystemSettings.checkForStop()) {
 	    // Uncomment for debugging
 	    // System.out.println("Executing @ [" + _x + "," + _y + "]");
-	    try {
-		Thread.sleep(sleepTime);
-	    } catch (InterruptedException iex) {
-		// ignore
+
+	    // If there is some positive amount of time to sleep, do it
+	    // If interrupted, ignore and go about your business
+	    if (sleepTime > 0) {
+		try {
+		    Thread.sleep(sleepTime);
+		} catch (InterruptedException iex) {
+		    // ignore
+		}
 	    }
 	    resetUpdates();
 	    executeOneStep();
+	    _mp.highlightChar(_pa, _x, _y);
 	    _mp.setStack(_ps.toString());
 	    _mp.refresh(_updateTa, _updateStack, _updateOutput);
 	}

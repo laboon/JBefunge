@@ -4,10 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.util.*;
 
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Highlighter;
-import javax.swing.text.Highlighter.HighlightPainter;
+import javax.swing.text.*;
 
 /**
  * The Main Panel of the program.
@@ -17,8 +14,8 @@ import javax.swing.text.Highlighter.HighlightPainter;
 public class MainPanel extends JPanel {
 
     // The text area for the program itself and its scrollpane
-    public JTextArea _ta = new JTextArea(1, 40);
-    public JScrollPane _taSp = new JScrollPane(_ta);
+    public JTextArea _pa = new JTextArea(1, 40);
+    public JScrollPane _paSp = new JScrollPane(_pa);
 
     // The text area for the stack display and its scrollpane
     public JTextArea _stack = new JTextArea(1, 40);
@@ -43,7 +40,7 @@ public class MainPanel extends JPanel {
 	if (text == null) {
 	    text = "";
 	}
-	_ta.setText(text);
+	_pa.setText(text);
     }
     
     /**
@@ -90,7 +87,7 @@ public class MainPanel extends JPanel {
     
     public String getTextArea() {
 
-	String text = _ta.getText();
+	String text = _pa.getText();
 	if (text == null) {
 	    text = "";
 	}
@@ -242,17 +239,77 @@ public class MainPanel extends JPanel {
     }
 
     /**
+     * Highlight character at position x, y in Program Area
+     * SIDE EFFECT: Modifies program area
+     * @param x x-pos of char to highlight
+     * @param y y-pos of char to highlight
+     */
+    
+    public void highlightChar(ProgramArea p, int x, int y) {
+	_pa.getHighlighter().removeAllHighlights();
+	DefaultHighlighter.DefaultHighlightPainter highlightPainter = 
+	    new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+	int start = convertLocation(x, y);
+	int end = start + 1;
+	System.out.println("Converting " + x + ", " + y + " to " + start);
+	try {
+	    _pa.getHighlighter().addHighlight(start, end, 
+					      highlightPainter);
+	} catch (BadLocationException blex) {
+	    // just ignore for now
+	}
+    }
+
+    /**
+     * Given an x, y coordinate, turn it into the nth location
+     * of the text area. 
+     * Note that this is not as simple as just multiplying x 
+     * by 80 and adding y!  This is because null chars are not
+     * counted in the string in the text area.  Thus we need to 
+     * count ONLY to the end of each line (i.e. until we hit a 
+     * \n char).  This necessitates a "counter" variable.
+     * There is probably a better/more performant way to do this.
+     * @param x x-pos of char
+     * @param y y-pos of char
+     * @return the string location of the char
+     */
+    private int convertLocation(int x, int y) {
+	char[] text = _pa.getText().toCharArray();
+	System.out.println("convertLocation: " + x + ", " + y
+			   + " : "
+			   + GeneralUtils.generateCharString(text));
+	int c = 0;
+	int curX = 0;
+	int curY = 0;
+
+	while (curX != x || curY != y) {
+	    System.out.println("curX = " + curX + " / curY = " + curY
+			       + " -> " + text[c]);
+	    if (text[c] == '\n') {
+		curX++;
+		curY = 0;
+	    } else {
+		curY++;
+	    }
+	    c++;
+	}
+	return c;
+    }
+
+
+    
+    /**
      * Refresh the text areas
-     * @param ta = should refresh text area if true
+     * @param pa = should refresh program area if true
      * @param stack = should refresh stack area if true
      * @param output = should refresh output area if true
      */
     
-    public void refresh(boolean ta,
+    public void refresh(boolean pa,
 			boolean stack,
 			boolean output) {
-	if (ta) {
-	    _ta.update(_ta.getGraphics());
+	if (pa) {
+	    _pa.update(_pa.getGraphics());
 	}
 	if (stack) {
 	    _stack.update(_stack.getGraphics());
@@ -268,8 +325,8 @@ public class MainPanel extends JPanel {
 	
 	Font f = new Font("monospaced", Font.PLAIN, 12);
 	
-	_ta.setFont(f);
-	_ta.setBorder(BorderFactory.createLineBorder(Color.black));
+	_pa.setFont(f);
+	_pa.setBorder(BorderFactory.createLineBorder(Color.black));
 	
 	_stack.setFont(f);
 	_stack.setEditable(false);
@@ -287,12 +344,12 @@ public class MainPanel extends JPanel {
 	
 	this.setLayout(new GridLayout(3, 1));
 
-	this.add(_taSp);
+	this.add(_paSp);
 	this.add(_midPanel);
 	this.add(_outputSp);
 	    
 	
-	_ta.setVisible(true);
+	_pa.setVisible(true);
 	_stack.setVisible(true);
 	_output.setVisible(true);
     }
