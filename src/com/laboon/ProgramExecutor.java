@@ -267,7 +267,8 @@ public class ProgramExecutor {
 		break;
 		
 	    default:  
-		System.err.println(c + " NOT SUPPORTED!");
+		System.err.println("'" + c + "' " + "(ASCII "
+				   + (int) c + ") NOT SUPPORTED!");
 	    
 	    }
 	} catch (EmptyStackException esex) {
@@ -519,8 +520,8 @@ public class ProgramExecutor {
 	shouldUpdateStack();
 	shouldUpdateTa();
 
-	int y = _ps.pop();
 	int x = _ps.pop();
+	int y = _ps.pop();
 	if (x > _pa._xSize || y > _pa._ySize || x < 0 || y < 0) {
 	    _ps.push(0);
 	} else {
@@ -539,8 +540,8 @@ public class ProgramExecutor {
     public void put() {
 	shouldUpdateStack();
 	shouldUpdateTa();
-	int y = _ps.pop();
 	int x = _ps.pop();
+	int y = _ps.pop();
 	int v = _ps.pop();
 	if (x > _pa._xSize || y > _pa._ySize || x < 0 || y < 0) {
 	    // Ignore, do nothing
@@ -661,8 +662,8 @@ public class ProgramExecutor {
 
     public boolean step() {
 	resetUpdates();
-	executeOneStep();
 	_mp.highlightChar(_pa, _x, _y);
+	executeOneStep();
 	_mp.setStack(_ps.toString());
 	_mp.refresh(_updateTa, _updateStack, _updateOutput);
 	return _programComplete;
@@ -691,8 +692,8 @@ public class ProgramExecutor {
 		}
 	    }
 	    resetUpdates();
-	    executeOneStep();
 	    _mp.highlightChar(_pa, _x, _y);
+	    executeOneStep();
 	    _mp.setStack(_ps.toString());
 	    _mp.refresh(_updateTa, _updateStack, _updateOutput);
 	}
