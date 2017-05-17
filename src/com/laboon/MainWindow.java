@@ -120,31 +120,12 @@ public class MainWindow extends JFrame {
 	menu.add(colorRadioItem);
 	
 	
-        // Build "Run" menu in the menu bar.
-        menu = new JMenu("Run");
-        menu.setMnemonic(KeyEvent.VK_R);
+        // Build "Options" menu in the menu bar.
+        menu = new JMenu("Options");
+        menu.setMnemonic(KeyEvent.VK_P);
         menu.getAccessibleContext().setAccessibleDescription(
                 "Run options");
         menuBar.add(menu);
-
-	menuItem = new JMenuItem("Run program");
-        menuItem.setMnemonic(KeyEvent.VK_Q);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_4, ActionEvent.ALT_MASK));
-        menuItem.getAccessibleContext().setAccessibleDescription(
-                "Run Program");
-        menu.add(menuItem);
-
-	menuItem = new JMenuItem("Step program");
-        menuItem.setMnemonic(KeyEvent.VK_Q);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_5, ActionEvent.ALT_MASK));
-        menuItem.getAccessibleContext().setAccessibleDescription(
-                "Step Program");
-        menu.add(menuItem);
-
-	// Separator
-        menu.addSeparator();
 	
         //a group of check box menu items for different options
         cbMenuItem = new JCheckBoxMenuItem("Time program");
