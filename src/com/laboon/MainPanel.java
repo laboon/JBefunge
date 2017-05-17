@@ -225,9 +225,9 @@ public class MainPanel extends JPanel {
 	
 	long start = System.nanoTime();
 	_programExecutor = new ProgramExecutor(this, _programStack, _programArea);
+	_programExecutor.run(sleepTime);
 	long end = System.nanoTime();
 	long time = (end - start) / 1000;
-	_programExecutor.run(sleepTime);
 	
 	// Display time to execute if proper setting selected
 	if (SystemSettings.timer()) {
