@@ -2,147 +2,160 @@ package com.laboon;
 
 import static org.junit.Assert.*;
 
+import static org.mockito.Mockito.*;
+
 import org.junit.*;
 
 /**
  * Test methods in ProgramExecutor class
- * 
- * TODO: These methods do not use stubs/mocks/doubles.  This would
- * be a good refactoring effort in the future!
  */
 
 public class ProgramExecutorTest {
 
-    // Shared ProgramExecutor
-    // A new one is created for each test - this is inefficient but
-    // ensures a clean slate for each test
     
-    public ProgramExecutor _e = null;
+    // ProgramStack, ProgramArea, MainPanel, ProgramExecutor
+    // To be doubled - variable reused for each test
+    ProgramStack _ps;
+    ProgramArea _pa;
+    MainPanel _mp;
+    ProgramExecutor _e;
 
-    // Create simple executor before each test
-    // Consists of a program "123++@" and a stack that already has
-    // the values [2, 3, 4] (4 being the "top" of the stack)
+    
+    // Create simple doubles before each test and an actual ProgramExecutor
+    // (as the latter is the class under test)
+    // We can add specific verification/stubs to each double in each test,
+    // as they will be created anew for each test that is run
+
+    // Note the @Before means this will run before each test case
+    // Use @After for code you want to run after each test case
+    // (this is usually called the teardown() method
+    // Use @BeforeClass / @AfterClass annotations for code you want
+    // to run before/after the entire class is executed
     @Before
     public void setup() {
-    	ProgramStack ps = new ProgramStack();
-    	ps.push(2);
-    	ps.push(3);
-    	ps.push(4); 
-    	ProgramArea pa = new ProgramArea("123++@");
-    	MainPanel mp = new MainPanel();
-    	_e = new ProgramExecutor(mp, ps, pa);
+	_ps = mock(ProgramStack.class);
+    	_pa = mock(ProgramArea.class);
+    	_mp = mock(MainPanel.class);
+	_e = new ProgramExecutor(_mp, _ps, _pa);
+
     }
 
-    // Test the '+' (add) command.   3 + 4 should == 7.
+    // Test the '+' (add) command.   3 + 3 should == 6.
     @Test
     public void testAdd() {
+	when(_ps.pop()).thenReturn(3).thenReturn(3);
 	_e.add();
-	assertEquals(_e._ps.peek(), 7);
+	verify(_ps).push(6);
     }
 
     // * -   Subtraction: Pop two values a and b, then push the result of b-a
+    // Check that 5 - 4 will return 1
     @Test
     public void testSubtract() {
-	_e.subtract();
-	assertEquals(_e._ps.peek(), -1);
+    	when(_ps.pop()).thenReturn(4).thenReturn(5);
+    	_e.subtract();
+    	verify(_ps).push(1);
     }
     
     // *   Multiplication: Pop two values a and b, then push the result of a*b
     @Test
     public void testMultiply() {
-	_e.multiply();
-	assertEquals(_e._ps.peek(), 12);
+    	when(_ps.pop()).thenReturn(5).thenReturn(2);
+    	_e.multiply();
+    	verify(_ps).push(10);
+
     }
     
-    // /   Integer division: Pop two values a and b, then push the result of b/a, rounded down. If a is zero, return 0.
+    //   Integer division: Pop two values a and b, then push the result of b/a, rounded down. If a is zero, return 0.
     // Check for "normal" (nonzero) division
     @Test
     public void testDivide() {
-	_e._ps.push(25); // b
-	_e._ps.push(5);  // a
-	_e.divide();
-	assertEquals(5, _e._ps.peek());
-
+	when(_ps.pop()).thenReturn(5).thenReturn(25);
+    	_e.divide();
+        verify(_ps).push(5);
     }
 
     // /   Integer division: Pop two values a and b, then push the result of b/a, rounded down. If a is zero, return 0.
     // Check for "normal" (nonzero) division, rounding down
     @Test
     public void testDivideRounding() {
-	_e._ps.push(26); // b
-	_e._ps.push(5);  // a
-	_e.divide();
-	assertEquals(5, _e._ps.peek());
+	when(_ps.pop()).thenReturn(5).thenReturn(26);
+    	_e.divide();
+        verify(_ps).push(5);
 
     }
-
     
     // /   Integer division: Pop two values a and b, then push the result of b/a, rounded down. If a is zero, return 0.
-    // Check that dividing by zero returns 0
+    // Check that dividing 0 divided by something returns 0
     @Test
-    public void testDivideZero() {
-	_e._ps.push(5);
-	_e._ps.push(0);
-	_e.divide();
-	assertEquals(0, _e._ps.peek());
+    public void testDivideZeroNumerator() {
+	when(_ps.pop()).thenReturn(5).thenReturn(0);
+    	_e.divide();
+        verify(_ps).push(0);
     }
 
-    
+    // /   Integer division: Pop two values a and b, then push the result of b/a, rounded down. If a is zero, return 0.
+    // Check that dividing something by zero returns 0
+    @Test
+    public void testDivideZeroDenominator() {
+	when(_ps.pop()).thenReturn(0).thenReturn(5);
+    	_e.divide();
+        verify(_ps).push(0);
+    }
+
     // %   Modulo: Pop two values a and b, then push the remainder of the integer division of b/a.
+    // Check that 6 % 5 = 1
     @Test
     public void modulo() {
+	when(_ps.pop()).thenReturn(5).thenReturn(6);
 	_e.modulo();
-	assertEquals(3, _e._ps.peek());
+        verify(_ps).push(1);
     }
 
 
     // !   Logical NOT: Pop a value. If the value is zero, push 1; otherwise, push zero.
-// Check for nonzero value returns 0
+    // Check for nonzero value returns 0
     @Test
     public void notNonZero() {
-	_e._ps.push(1);
+	when(_ps.pop()).thenReturn(6);
 	_e.not();
-	assertEquals(0, _e._ps.peek());
-
+	verify(_ps).push(0);
     }
 
     // !   Logical NOT: Pop a value. If the value is zero, push 1; otherwise, push zero.
     // Check for 0 value returns 1
     @Test
     public void testNotZero() {
-	_e._ps.push(0);
+	when(_ps.pop()).thenReturn(0);
 	_e.not();
-	assertEquals(1, _e._ps.peek());
+	verify(_ps).push(1);
     }
     
     // `   Greater than: Pop two values a and b, then push 1 if b>a, otherwise zero.
-    // Check b > a returns 1
+    // Check b > a returns 1 ( 5 > 2 -> 1 )
     @Test
     public void testGreaterThanBgtA() {
-	_e._ps.push(5); // b
-	_e._ps.push(2); // a
+	when(_ps.pop()).thenReturn(2).thenReturn(5);
 	_e.greaterThan();
-	assertEquals(1, _e._ps.peek());
+	verify(_ps).push(1);
     }
 
     // `   Greater than: Pop two values a and b, then push 1 if b>a, otherwise zero.
-    // Check b == a returns 0
+    // Check b == a pushes 0
     @Test
     public void testGreaterThanBeqA() {
-	_e._ps.push(10);
-	_e._ps.push(10);
+	when(_ps.pop()).thenReturn(10).thenReturn(10);
 	_e.greaterThan();
-	assertEquals(0, _e._ps.peek());
+	verify(_ps).push(0);
     }
 
     // `   Greater than: Pop two values a and b, then push 1 if b>a, otherwise zero.
     // Check b < a returns 0
     @Test
     public void testGreaterThanBltA() {
-	_e._ps.push(10); // b
-	_e._ps.push(99); // a
+	when(_ps.pop()).thenReturn(99).thenReturn(10);
 	_e.greaterThan();
-	assertEquals(0, _e._ps.peek());
+	verify(_ps).push(0);
     }
 
     
@@ -150,16 +163,15 @@ public class ProgramExecutorTest {
     // Check going right if value is 0
     
     public void testHorizontalIfZero() {
-    	_e._ps.push(0);
+	when(_ps.pop()).thenReturn(0);
 	_e.horizontalIf();
 	assertEquals(Direction.RIGHT, _e._d);
     }
 
     //  *  _   Horizontal IF: pop a value; set direction to right if value=0, set to left otherwise
-    // Check going left if value is positive
-    
+    // Check going left if value is positive    
     public void testHorizontalIfPositive() {
-    	_e._ps.push(19);
+	when(_ps.pop()).thenReturn(19);
 	_e.horizontalIf();
 	assertEquals(Direction.LEFT, _e._d);
     }
@@ -168,7 +180,7 @@ public class ProgramExecutorTest {
     // Check going left if value is positive
     
     public void testHorizontalIfNegative() {
-    	_e._ps.push(-3);
+	when(_ps.pop()).thenReturn(-3);
 	_e.horizontalIf();
 	assertEquals(Direction.LEFT, _e._d);
     }
